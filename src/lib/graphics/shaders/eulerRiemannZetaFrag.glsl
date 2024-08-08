@@ -9,6 +9,14 @@ const float CRITICAL_LINE = 0.5; // The real part of s on the critical line
 const float ZERO_LINE = 0.0; // The real part of s at 0
 const float ONE_LINE = 1.0; // The real part of s at 1
 
+const float LINE_A = 2.25;
+const float LINE_NEG_A = -2.25;
+const float LINE_B = 6.78;
+const float LINE_NEG_B = -6.78;
+
+const float LINE_E = 20.38;
+const float LINE_NEG_E = -20.38;
+
 // Function to compute the Euler–Riemann zeta function
 float zeta(float sigma, float t) {
     float sum = 0.0;
@@ -26,10 +34,9 @@ float zeta(float sigma, float t) {
 void main() {
     float scale = 100.0;
     float half_scale = scale * 0.5;
-    float half_scale_height = scale * 0.5;
     // Map the fragment coordinates to the complex plane
-    float sigma = vUv.y * scale - half_scale_height; // Real part of s
-    float t = vUv.x * scale - half_scale;    // Imaginary part of s
+    float sigma = vUv.y * scale - half_scale; // Real part of s (horizontal axis)
+    float t = vUv.x * scale - half_scale;    // Imaginary part of s (vertical axis)
 
     // Compute the zeta function value
     float zetaValue = zeta(sigma, t);
@@ -43,9 +50,15 @@ void main() {
 
     // Draw the critical strip
     float lineThickness = 0.0002; // Thickness of the line
-    float criticalLinePosition = (CRITICAL_LINE + 10.0) / 20.0; // Normalize the critical line position
-    float zeroLinePosition = (ZERO_LINE + 10.0) / 20.0; // Normalize the zero line position
-    float oneLinePosition = (ONE_LINE + 10.0) / 20.0; // Normalize the one line position
+    float criticalLinePosition = (CRITICAL_LINE + half_scale) / scale; // Normalize the critical line position
+    float zeroLinePosition = (ZERO_LINE + half_scale) / scale; // Normalize the zero line position
+    float oneLinePosition = (ONE_LINE + half_scale) / scale; // Normalize the one line position
+
+    // Vertical lines positions
+    float lineAPosition = (LINE_A + half_scale) / scale;
+    float lineNegAPosition = (LINE_NEG_A + half_scale) / scale;
+    float lineBPosition = (LINE_B + half_scale) / scale;
+    float lineNegBPosition = (LINE_NEG_B + half_scale) / scale;
 
     // Highlight the critical strip
     if (abs(vUv.y - criticalLinePosition) < lineThickness) {
@@ -60,6 +73,23 @@ void main() {
     // Highlight the one line
     if (abs(vUv.y - oneLinePosition) < lineThickness) {
         gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7); // Black line for one
+    }
+
+    // Highlight the vertical lines
+    if (abs(vUv.x - lineAPosition) < lineThickness) {
+        gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7); // Black line for A
+    }
+
+    if (abs(vUv.x - lineNegAPosition) < lineThickness) {
+        gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7); // Black line for -A
+    }
+
+    if (abs(vUv.x - lineBPosition) < lineThickness) {
+        gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7); // Black line for B
+    }
+
+    if (abs(vUv.x - lineNegBPosition) < lineThickness) {
+        gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7); // Black line for -B
     }
 
     gl_FragColor = vec4(gradient2, 1.0);
