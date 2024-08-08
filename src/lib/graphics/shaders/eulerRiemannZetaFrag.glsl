@@ -25,8 +25,8 @@ const float LINE_NEG_E = -initial1 - 4.0 * gap1; // The real part of s at 0
 const float LINE_F = initial1 + 5.0 * gap1; // The real part of s at 0
 const float LINE_NEG_F = -initial1 - 5.0 * gap1; // The real part of s at 0
 
-// const float initial2 = 3.19099;
-// const float gap2 = 6.38198;
+// const float initial2 = 1.468553;
+// const float gap2 = 2.937106;
 
 // const float LINE_A1 = initial2; // The real part of s at 0
 // const float LINE_NEG_A1 = -initial2; // The real part of s at 0
