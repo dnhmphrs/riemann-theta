@@ -19,6 +19,7 @@
 </script>
 
 <div class="matrix">
+  <p>: Riemann Matrix :</p>
   <table>
     <tr>
     </tr>
@@ -52,5 +53,6 @@
   }
   p{
     text-align: center;
+    PADDING: 5PX;
   }
 </style>
