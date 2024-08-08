@@ -1,19 +1,20 @@
-precision highp float; // Use medium precision for balance between quality and performance
+precision highp float; // Use high precision for better accuracy
 varying vec2 vUv;
 uniform vec3 color1;
 uniform vec3 color2;
 uniform vec3 color3;
 uniform vec2 mouse;
 
-// Function to create a dynamic Riemann matrix based on mouse input
-mat3 createDynamicOmega(vec2 mouse) {
-    // Scale the mouse input for more subtle effects
-    mouse.x *= 0.3;
-    mouse.y *= 0.3;
+// Function to create a dynamic symmetric and positive definite matrix based on mouse input
+mat3 createSymmetricOmega(vec2 mouse) {
+    mouse.x *= 0.4;
+    mouse.y *= 0.4;
+    float sinX = sin(3.14159 * mouse.x);
+    float cosY = cos(3.14159 *mouse.y);
     return mat3(
-        1.0 + 0.5 * sin(mouse.x * 3.14159), 0.5 * cos(mouse.y * 3.14159), 0.2 * sin(mouse.x),
-        0.5 * cos(mouse.x), 1.0 + 0.5 * cos(mouse.y * 3.14159), 0.1 * sin(mouse.x * 3.14159),
-        0.2 * sin(mouse.x), 0.1 * cos(mouse.x), 1.0 + 0.5 * sin(mouse.y * 3.14159)
+        1.0 + 0.5 * sinX, 0.5 * cosY, 0.2 * sinX,
+        0.5 * cosY, 1.0 + 0.5 * sinX, 0.1 * cosY,
+        0.2 * sinX, 0.1 * cosY, 1.0 + 0.5 * sinX
     );
 }
 
@@ -25,8 +26,8 @@ const vec3 phi = vec3(0.0, 0.0, 0.0);
 
 const int N = 2; // Reduced number of terms for better performance
 
-// Function to compute the real part of the Riemann theta function
-float riemannThetaReal(vec3 z, mat3 Omega) {
+// Function to compute the real part of the KP solution
+float kpSolutionReal(vec3 z, mat3 Omega) {
     float sum = 0.0;
 
     // Iterate over the range of n values for 3 dimensions
@@ -58,26 +59,26 @@ void main() {
     float x = vUv.x * 5.0 - 2.5;
     float y = vUv.y * 5.0 - 2.5;
 
-    // Create a dynamic Riemann matrix based on mouse input
-    mat3 OmegaDynamic = createDynamicOmega(mouse);
+    // Create a dynamic symmetric and positive definite matrix based on mouse input
+    mat3 OmegaDynamic = createSymmetricOmega(mouse);
 
     // Map mouse position to modify phase vectors
-    vec3 k = baseK + vec3(sin(mouse.x * 3.14) * 0.5, cos(mouse.y * 3.14) * 0.5, 0.0);
-    vec3 l = baseL + vec3(cos(mouse.x * 3.14) * 0.5, sin(mouse.y * 3.14) * 0.5, 0.0);
-    vec3 omega = baseOmega + vec3(sin(mouse.x * 3.14) * 0.2, cos(mouse.y * 3.14) * 0.2, mouse.x * mouse.y * 0.1);
+    // vec3 k = baseK + vec3(sin(mouse.x * 3.14) * 0.5, cos(mouse.y * 3.14) * 0.5, 0.0);
+    // vec3 l = baseL + vec3(cos(mouse.x * 3.14) * 0.5, sin(mouse.y * 3.14) * 0.5, 0.0);
+    // vec3 omega = baseOmega + vec3(sin(mouse.x * 3.14) * 0.2, cos(mouse.y * 3.14) * 0.2, mouse.x * mouse.y * 0.1);
 
     // Calculate the phase variable z using phase vectors
-    vec3 z = k * x + l * y + phi;
+    vec3 z = baseK * x + baseL * y + phi;
 
-    // Calculate the real part of the Riemann theta function at z
-    float thetaValueReal = riemannThetaReal(z, OmegaDynamic);
+    // Calculate the real part of the KP solution at z
+    float kpValueReal = kpSolutionReal(z, OmegaDynamic);
 
-    // Normalize thetaValue to map to color range
-    float normalizedTheta = 0.5 + 0.5 * thetaValueReal;
+    // Normalize kpValue to map to color range
+    float normalizedKp = 0.5 + 0.5 * kpValueReal;
 
     // Create gradients for visualization
-    vec3 gradient1 = mix(color1, color2, normalizedTheta);
-    vec3 gradient2 = mix(color3, gradient1, 0.25 + 0.25 * sin(normalizedTheta));
+    vec3 gradient1 = mix(color1, color2, normalizedKp);
+    vec3 gradient2 = mix(color3, gradient1, 0.25 + 0.25 * sin(normalizedKp));
 
     gl_FragColor = vec4(gradient2, 1.0);
 }

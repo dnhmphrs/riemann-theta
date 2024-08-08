@@ -9,7 +9,7 @@
 	// stub data out
 	const navItems = [
 		{
-			name: 'Riemann Theta (N=2)',
+			name: 'Riemann Theta - Real Part (N=2)',
 			href: '/'
 		},
 		{
@@ -17,11 +17,11 @@
 			href: '/kp-equation'
 		},
 		// {
-		// 	name: 'Riemann Theta - Imaginary Part (N=2)',
-		// 	href: '/riemann-imaginary'
+		// 	name: 'Siegel Upper Half Space (N=2)',
+		// 	href: '/siegel-upper-half-space'
 		// },
 		{
-			name: 'Theta Lattice (N=1)',
+			name: 'Tangent Lattice (N=1)',
 			href: '/theta-lattice'
 		},
 	];

@@ -1,4 +1,4 @@
-precision mediump float; // Use medium precision for balance between quality and performance
+precision highp float; // Use medium precision for balance between quality and performance
 varying vec2 vUv;
 uniform vec3 color1;
 uniform vec3 color2;
@@ -6,15 +6,22 @@ uniform vec3 color3;
 uniform vec2 mouse;
 uniform float aspectRatio;
 
-// Function to create a dynamic Riemann matrix based on mouse input
+// Function to create a symmetric and positive definite matrix
 mat3 createDynamicOmega(vec2 mouse) {
-    mouse.x *= 0.6;
-    mouse.y *= 0.6;
-    return mat3(
-        1.0 + 0.5 * sin(mouse.x * 3.14159), 0.5 * cos(mouse.y * 3.14159), 0.2 * sin(mouse.x),
-        0.5 * cos(mouse.x), 1.0 + 0.5 * cos(mouse.y * 3.14159), 0.1 * sin(mouse.x * 3.14159),
-        0.2 * sin(mouse.x), 0.1 * cos(mouse.x), 1.0 + 0.5 * sin(mouse.y * 3.14159)
+    mouse.x *= 0.2;
+    mouse.y *= 0.2;
+    float sinX = sin(3.14159 * mouse.x);
+    float cosY = cos(3.14159 *mouse.y);
+
+    // Define the matrix B
+    mat3 B = mat3(
+        1.0 + 0.5 * sinX, 0.5 * cosY, 0.2 * sinX,
+        0.5 * cosY, 1.0 + 0.5 * cosY, 0.1 * sinX,
+        0.2 * sinX, 0.1 * cosY, 1.0 + 0.5 * sinX
     );
+
+    // Compute A = B^T * B to ensure positive definiteness
+    return transpose(B) * B;
 }
 
 const int N = 2; // Reduced number of terms in the series for better performance
@@ -38,9 +45,8 @@ float riemannThetaReal(vec3 z, mat3 Omega) {
                 // Compute the real part of the exponential term
                 float exponent = 3.14159 * (nt_Omega_n + nt_z);
                 float realPart = cos(exponent); // Use cosine for the real part
-                float imaginaryPart = sin(exponent); // Use sine for the imaginary part
 
-                sum += realPart + imaginaryPart;
+                sum += realPart;
             }
         }
     }

@@ -1,14 +1,19 @@
-precision highp float; // Use low precision for better performance
-varying vec2 vUv; // Varying vector for texture coordinates
+precision highp float; // Use medium precision for balance between quality and performance
+varying vec2 vUv;
 uniform vec3 color1;
 uniform vec3 color2;
 uniform vec3 color3;
 uniform vec2 mouse;
+uniform float aspectRatio;
 
-// Function to create a dynamic Riemann matrix based on mouse input
+// Function to create a symmetric and positive definite matrix
 mat3 createDynamicOmega(vec2 mouse) {
-    mouse.x *= 0.6;
-    mouse.y *= 0.6;
+    mouse.x *= 0.2;
+    mouse.y *= 0.2;
+    float sinX = sin(3.14159 * mouse.x);
+    float cosY = cos(3.14159 *mouse.y);
+
+    // Define the matrix B
     return mat3(
         1.0 + 0.5 * sin(mouse.x * 3.14159), 0.5 * cos(mouse.y * 3.14159), 0.2 * sin(mouse.x),
         0.5 * cos(mouse.x), 1.0 + 0.5 * cos(mouse.y * 3.14159), 0.1 * sin(mouse.x * 3.14159),
@@ -36,9 +41,9 @@ float riemannThetaReal(vec3 z, mat3 Omega) {
 
                 // Compute the real part of the exponential term
                 float exponent = 3.14159 * (nt_Omega_n + nt_z);
-                float tangentPart = tan(exponent); // Use cosine for the real part
+                float realPart = tan(exponent); // Use cosine for the real part
 
-                sum += tangentPart;
+                sum += realPart;
             }
         }
     }
@@ -48,11 +53,11 @@ float riemannThetaReal(vec3 z, mat3 Omega) {
 
 void main() {
     // Map the fragment coordinates to the complex plane
-    float x = vUv.x * 1.0 - 0.5;
-    float y = vUv.y * 1.0 - 0.5;
+    float x = vUv.x * 0.5 - 0.25;
+    float y = vUv.y * 0.5 - 0.25;
 
     // Create a dynamic Riemann matrix based on mouse input
-    mat3 OmegaDynamic = createDynamicOmega(mouse);
+    mat3 OmegaDynamic = createDynamicOmega(mouse); // createDynamicOmega(mouse);
 
     // Construct a 3D vector for the z variable
     vec3 z = vec3(x, y, 2.0); // Static third component
@@ -65,7 +70,7 @@ void main() {
 
     // Create gradients for visualization
     vec3 gradient1 = mix(color1, color2, normalizedTheta);
-    vec3 gradient2 = mix(color3, gradient1, 0.5 + 0.5 * cos(normalizedTheta));
+    vec3 gradient2 = mix(color3, gradient1, 0.5 + 0.5 * sin(normalizedTheta));
 
     gl_FragColor = vec4(gradient2, 1.0);
 }
