@@ -28,7 +28,7 @@ const float LINE_NEG_F = -24.90;
 // Function to compute the Euler–Riemann zeta function
 float zeta(float sigma, float t) {
     float sum = 0.0;
-    const int N = 50; // Number of terms in the series for approximation
+    const int N = 100; // Number of terms in the series for approximation
 
     for (int n = 1; n <= N; ++n) {
         float term = pow(float(n), -sigma);
