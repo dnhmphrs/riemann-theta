@@ -1,126 +1,136 @@
 <script>
-	import './app.css';
+	import './styles.css';
+
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	import { webVitals } from '$lib/vitals';
 
 	import { onMount } from 'svelte';
-	import { screenType, isIframe, renderer } from '$lib/store/store';
+	import { screenType, isIframe, screenSize } from '$lib/store/store';
+	import { getDeviceType, getScreenSize } from '$lib/functions/utils';
 
 	import Header from '$lib/components/header/header.svelte';
-	import Footer from '$lib/components/footer/footer.svelte';
 
+	export let data;
 	let Geometry;
 
-	onMount(async () => {
+	$: if (browser && data?.analyticsId) {
+		webVitals({
+			path: $page.url.pathname,
+			params: $page.params,
+			analyticsId: data.analyticsId
+		});
+	}
 
-		if ($renderer === 'three') {
-			const moduleThree = await import('$lib/graphics/three.svelte');
-			Geometry = moduleThree.default;
-		}
+	function handleScreen() {
+		// screen size
+		screenSize.set(getScreenSize());
 
-		if ($renderer === 'regl') {
-			const moduleRegl = await import('$lib/graphics/regl.svelte');
-			Geometry = moduleRegl.default;
-		}
-
-		if ($renderer === 'webgl') {
-			const moduleWebGL = await import('$lib/graphics/webgl.svelte');
-			Geometry = moduleWebGL.default;
-		}
-
-		function getDeviceType() {
-			const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-
-			if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
-				// This is a device which supports touch
-				if (width <= 767) {
-					// Mobile
-					return 1;
-				} else {
-					// Tablet
-					return 2;
-				}
-			} else {
-				// This is likely a laptop or desktop
-				return 3;
-			}
-		}
-
+		// device type
 		screenType.set(getDeviceType());
 		isIframe.set(window.location !== window.parent.location);
-	});
+	}
 
+	onMount(async () => {
+		// webgl
+		const module = await import('$lib/graphics/three.svelte');
+		Geometry = module.default;
+
+		handleScreen();
+		window.addEventListener('resize', () => handleScreen());
+
+		return () => {
+			window.removeEventListener('resize', () => handleScreen());
+		};
+	});
 </script>
 
 <svelte:head>
 	<title>RIEMANN THETA</title>
-	<meta name="description" content="Riemann Theta and KP Equation Renders" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="AUFBAU" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<link
+	<!-- <link rel="preload" href="/aufbau.svg" as="image" type="image/svg+xml" crossorigin="anonymous" /> -->
+
+	<!-- <link
 		rel="preload"
 		href="/fonts/NB-Architekt-Pro-Light.woff"
 		as="font"
 		type="font/woff"
 		crossorigin="anonymous"
-	/>
+	/> -->
 
-	<link
+	<!-- <link
 		rel="preload"
 		href="/fonts/NB-Architekt-Pro-Bold.woff"
 		as="font"
 		type="font/woff"
 		crossorigin="anonymous"
-	/>
+	/> -->
 
-	<link rel="preload" href="icons/cv.svg" as="image">
-	<link rel="preload" href="icons/insta.svg" as="image">
-	<link rel="preload" href="icons/mail.svg" as="image">
-
+	<!-- <link
+	rel="preload"
+	href="/fonts/Dahlia-Medium.woff2"
+	as="font"
+	type="font/woff2"
+	crossorigin="anonymous"
+/> -->
 </svelte:head>
 
-{#key $renderer}
-<svelte:component this={Geometry} />
-{/key}
+{#if Geometry}
+<header>
+	<Header />
+</header>
 
-{#if $screenType}
-	<main>
-		<header>
-			<Header />
-		</header>
-
-		<body>
-			<slot />
-		</body>
-
-		<!-- {#if $screenType == 3}
-		<footer>
-			<Footer />
-		</footer>
-		{/if} -->
-	</main>
+	<svelte:component this={Geometry} />
+{:else}
+	<div class="loading">loading.</div>
 {/if}
 
+<div class="app">
+	<main>
+		<slot />
+	</main>
+</div>
+
 <style>
-	main {
-		display: flex;
-		flex-direction: column;
-		height: 100dvh;
-	}
-	
-	header {
+		header {
 		position: absolute;
 		top: 0;
 		width: 100%;
 	}
 
-	footer {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-	}
-
-	body {
+	.app {
 		display: flex;
 		flex-direction: column;
-		/* padding: calc(1 * var(--margin)); */
+		align-items: center;
+		justify-content: center;
+		height: 100dvh;
+		max-height: 100vh;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.loading {
+		position: absolute;
+		font-style: italic;
+		font-family: serif;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: 10px;
+		font-size: 12px;
+	}
+
+	main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
 		width: 100%;
 		height: 100%;
 	}

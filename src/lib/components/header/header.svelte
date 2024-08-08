@@ -1,5 +1,6 @@
 <script>
 	import Nav from './nav.svelte';
+	import Matrix from './matrix.svelte';
 	// import { darkMode, screenType } from '$lib/store/store';
 
 	// import { page } from '$app/stores';
@@ -34,6 +35,8 @@
 <header>
 	<main>
 
+		<div></div>
+		<Matrix />
 		<Nav {navItems} />
 
 	<!-- <div on:click={() => toggleDarkMode()} on:keydown={() => toggleDarkMode()} class="darkMode right">
@@ -67,32 +70,11 @@
 		margin: auto;
 		max-width: 100vw;
 		display: flex;
-		justify-content: flex-end;
-		align-items: flex-start;
+		flex-flow: row nowrap;
+		justify-content: space-between;
 
 		padding: 20px;
 		font-size: 12px;
 		height: calc(2 * var(--margin));
 	}
-
-	.icons {
-		display: flex;
-		gap: 15px;
-		padding: 6px 15px;
-		justify-content: space-evenly;
-		background: var(--background);
-		border: var(--border);
-	}
-
-	.icon {
-		height: 20px;
-		width: 20px;
-
-		cursor: pointer;
-		opacity: 1;
-	}
-
-	.icon:hover{
-		opacity:.5;
-		}
 </style>

@@ -1,18 +1,27 @@
 <script>
 	import { onMount, onDestroy  } from 'svelte';
-	import { screenType } from '$lib/store/store';
+	import { screenType, mousePosition } from '$lib/store/store';
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
 
 	import * as THREE from 'three';
 	import Stats from 'stats.js'
 
+	// old
+	// import vertexShader from './shaders/vertexShader-three.glsl';
+  // import riemannRealFragShaderSource from './shaders/riemannRealFrag.glsl';
+  // import riemannImaginaryFragShaderSource from './shaders/riemannImaginaryFrag.glsl';
+  // import riemannLatticeFragShaderSource from './shaders/riemannLatticeFrag.glsl';
+  // import kpEquationFragShaderSource from './shaders/kpEquationFrag.glsl';
+
+	// new
 	import vertexShader from './shaders/vertexShader-three.glsl';
-	import fragmentShader_riemann from './shaders/fragmentShader-riemann.glsl';
-	import fragmentShader_riemann_real from './shaders/fragmentShader-riemann-real.glsl';
-	import fragmentShader_riemann_imaginary from './shaders/fragmentShader-riemann-imaginary.glsl';
-	import fragmentShader_riemann_lattice from './shaders/fragmentShader-riemann-lattice.glsl';
-	import fragmentShader_kp from './shaders/fragmentShader-kp.glsl';
+	import fragmentShader_riemann_real from './shaders/riemannRealFrag.glsl';
+	import fragmentShader_riemann_imaginary from './shaders/riemannImaginaryFrag.glsl';
+	import fragmentShader_riemann_lattice from './shaders/riemannLatticeFrag.glsl';
+	import fragmentShader_kp from './shaders/kpEquationFrag.glsl';
+
+
 
 	let shaderMaterial_riemann_lattice, shaderMaterial_riemann_real, shaderMaterial_riemann_imaginary, shaderMaterial_riemann, shaderMaterial_kp;
 
@@ -51,17 +60,6 @@
 			color9: new THREE.Color(0x8fbd5a),
 			color0: new THREE.Color(0x232323),
 		}
-
-		shaderMaterial_riemann = new THREE.ShaderMaterial({
-			vertexShader: vertexShader,
-			fragmentShader: fragmentShader_riemann,
-			uniforms: {
-				...uniformsBase,
-				color1: { value: colors.color1 },
-				color2: { value: colors.color0 },
-				color3: { value: colors.color0 },
-			}
-		});
 
 		shaderMaterial_riemann_real = new THREE.ShaderMaterial({
 			vertexShader: vertexShader,
@@ -286,6 +284,9 @@
 
     mouse.x = (clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+
+		// update store
+		mousePosition.set(mouse);
 
 	};
 
