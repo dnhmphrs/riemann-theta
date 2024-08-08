@@ -211,7 +211,7 @@
 			setKP();
 		}
 
-		if ($page.url.pathname == '/theta-lattice') {
+		if ($page.url.pathname == '/tangent-lattice') {
 			setThetaLattice();
 		}
 	}

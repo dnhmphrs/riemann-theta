@@ -6,13 +6,36 @@
     const sin = Math.sin;
     const cos = Math.cos;
     const pi = Math.PI;
-    const x = mouse.x * 0.6;
-    const y = mouse.y * 0.6;
-    return [
+    const x = mouse.x * 0.2;
+    const y = mouse.y * 0.2;
+
+    // Define the matrix B
+    const B = [
       [1.0 + 0.5 * sin(x * pi), 0.5 * cos(y * pi), 0.2 * sin(x)],
-      [0.5 * cos(x), 1.0 + 0.5 * cos(y * pi), 0.1 * sin(x * pi)],
-      [0.2 * sin(x), 0.1 * cos(x), 1.0 + 0.5 * sin(y * pi)]
+      [0.5 * cos(y * pi), 1.0 + 0.5 * cos(y * pi), 0.1 * sin(x * pi)],
+      [0.2 * sin(x), 0.1 * cos(y * pi), 1.0 + 0.5 * sin(x * pi)]
     ];
+
+    // Compute A = B^T * B to ensure positive definiteness
+    const A = [
+      [
+        B[0][0] * B[0][0] + B[1][0] * B[1][0] + B[2][0] * B[2][0],
+        B[0][0] * B[0][1] + B[1][0] * B[1][1] + B[2][0] * B[2][1],
+        B[0][0] * B[0][2] + B[1][0] * B[1][2] + B[2][0] * B[2][2]
+      ],
+      [
+        B[0][1] * B[0][0] + B[1][1] * B[1][0] + B[2][1] * B[2][0],
+        B[0][1] * B[0][1] + B[1][1] * B[1][1] + B[2][1] * B[2][1],
+        B[0][1] * B[0][2] + B[1][1] * B[1][2] + B[2][1] * B[2][2]
+      ],
+      [
+        B[0][2] * B[0][0] + B[1][2] * B[1][0] + B[2][2] * B[2][0],
+        B[0][2] * B[0][1] + B[1][2] * B[1][1] + B[2][2] * B[2][1],
+        B[0][2] * B[0][2] + B[1][2] * B[1][2] + B[2][2] * B[2][2]
+      ]
+    ];
+
+    return A;
   }
 
   $: dynamicMatrix = calculateMatrix($mousePosition);

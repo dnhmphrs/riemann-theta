@@ -22,7 +22,7 @@
 		// },
 		{
 			name: 'Tangent Lattice (N=1)',
-			href: '/theta-lattice'
+			href: '/tangent-lattice'
 		},
 	];
 

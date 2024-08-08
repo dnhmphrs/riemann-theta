@@ -70,7 +70,7 @@ void main() {
 
     // Create gradients for visualization
     vec3 gradient1 = mix(color1, color2, normalizedTheta);
-    vec3 gradient2 = mix(color3, gradient1, 0.5 + 0.5 * sin(normalizedTheta));
+    vec3 gradient2 = mix(color3, gradient1, 0.5 + 0.5 * cos(normalizedTheta));
 
     gl_FragColor = vec4(gradient2, 1.0);
 }

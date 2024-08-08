@@ -6,16 +6,21 @@ uniform vec3 color3;
 uniform vec2 mouse;
 
 // Function to create a dynamic symmetric and positive definite matrix based on mouse input
-mat3 createSymmetricOmega(vec2 mouse) {
-    mouse.x *= 0.4;
-    mouse.y *= 0.4;
+mat3 createDynamicOmega(vec2 mouse) {
+    mouse.x *= 0.2;
+    mouse.y *= 0.2;
     float sinX = sin(3.14159 * mouse.x);
     float cosY = cos(3.14159 *mouse.y);
-    return mat3(
+
+    // Define the matrix B
+    mat3 B = mat3(
         1.0 + 0.5 * sinX, 0.5 * cosY, 0.2 * sinX,
-        0.5 * cosY, 1.0 + 0.5 * sinX, 0.1 * cosY,
+        0.5 * cosY, 1.0 + 0.5 * cosY, 0.1 * sinX,
         0.2 * sinX, 0.1 * cosY, 1.0 + 0.5 * sinX
     );
+
+    // Compute A = B^T * B to ensure positive definiteness
+    return transpose(B) * B;
 }
 
 // Base phase vectors
@@ -60,7 +65,7 @@ void main() {
     float y = vUv.y * 5.0 - 2.5;
 
     // Create a dynamic symmetric and positive definite matrix based on mouse input
-    mat3 OmegaDynamic = createSymmetricOmega(mouse);
+    mat3 OmegaDynamic = createDynamicOmega(mouse);
 
     // Map mouse position to modify phase vectors
     // vec3 k = baseK + vec3(sin(mouse.x * 3.14) * 0.5, cos(mouse.y * 3.14) * 0.5, 0.0);
