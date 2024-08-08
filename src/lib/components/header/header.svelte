@@ -11,10 +11,10 @@
 			name: 'KP Equation (N=2)',
 			href: '/'
 		},
-		// {
-		// 	name: 'Riemann Theta - Real Part (N=2)',
-		// 	href: '/riemann-real'
-		// },
+		{
+			name: 'Riemann Theta - Real Part (N=2)',
+			href: '/riemann-real'
+		},
 		{
 			name: 'Riemann Theta - Imaginary Part (N=2)',
 			href: '/riemann-imaginary'
