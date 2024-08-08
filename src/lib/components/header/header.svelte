@@ -24,7 +24,7 @@
 			href: '/tangent-lattice'
 		},
 		{
-			name: 'Euler-Riemann Zeta - Tangent + Hermite',
+			name: 'Euler-Riemann Zeta - Tangent + Hermite Polynomials',
 			href: '/euler-riemann-zeta'
 		}
 	];
