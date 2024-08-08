@@ -9,20 +9,29 @@ const float CRITICAL_LINE = 0.5; // The real part of s on the critical line
 const float ZERO_LINE = 0.0; // The real part of s at 0
 const float ONE_LINE = 1.0; // The real part of s at 1
 
-const float LINE_A = 2.26;
-const float LINE_NEG_A = -2.26;
-const float LINE_B = 6.78;
-const float LINE_NEG_B = -6.78;
+const float initial1 = 2.26658;
+const float gap1 = 4.53316;
 
-const float LINE_C = 11.35;
-const float LINE_NEG_C = -11.35;
-const float LINE_D = 15.85;
-const float LINE_NEG_D = -15.85;
+const float LINE_A = initial1; // The real part of s at 0
+const float LINE_NEG_A = -initial1; // The real part of s at 0
+const float LINE_B = initial1 + gap1; // The real part of s at 0
+const float LINE_NEG_B = -initial1 - gap1; // The real part of s at 0
+const float LINE_C = initial1 + 2.0 * gap1; // The real part of s at 0
+const float LINE_NEG_C = -initial1 - 2.0 * gap1; // The real part of s at 0
+const float LINE_D = initial1 + 3.0 * gap1; // The real part of s at 0
+const float LINE_NEG_D = -initial1 - 3.0 * gap1; // The real part of s at 0
+const float LINE_E = initial1 + 4.0 * gap1; // The real part of s at 0
+const float LINE_NEG_E = -initial1 - 4.0 * gap1; // The real part of s at 0
+const float LINE_F = initial1 + 5.0 * gap1; // The real part of s at 0
+const float LINE_NEG_F = -initial1 - 5.0 * gap1; // The real part of s at 0
 
-const float LINE_E = 20.38;
-const float LINE_NEG_E = -20.38;
-const float LINE_F = 24.90;
-const float LINE_NEG_F = -24.90;
+// const float initial2 = 3.19099;
+// const float gap2 = 6.38198;
+
+// const float LINE_A1 = initial2; // The real part of s at 0
+// const float LINE_NEG_A1 = -initial2; // The real part of s at 0
+// const float LINE_B1 = initial2 + gap2; // The real part of s at 0
+// const float LINE_NEG_B1 = -initial2 - gap2; // The real part of s at 0
 
 
 // Function to compute the Euler–Riemann zeta function
@@ -76,6 +85,11 @@ void main() {
     float lineFPosition = (LINE_F + half_scale) / scale;
     float lineNegFPosition = (LINE_NEG_F + half_scale) / scale;
 
+    // float lineA1Position = (LINE_A1 + half_scale) / scale;
+    // float lineNegA1Position = (LINE_NEG_A1 + half_scale) / scale;
+    // float lineB1Position = (LINE_B1 + half_scale) / scale;
+    // float lineNegB1Position = (LINE_NEG_B1 + half_scale) / scale;
+
     // Highlight the critical strip
     if (abs(vUv.y - criticalLinePosition) < lineThickness) {
         gradient2 = mix(color3, vec3(1.0, 0.0, 0.0), 0.7); // Red line for the critical strip
@@ -91,7 +105,7 @@ void main() {
         gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7); // Black line for one
     }
 
-    // Highlight the vertical lines
+    // Highlight the vertical lines - 1
     if (abs(vUv.x - lineAPosition) < lineThickness) {
         gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7);
     }
@@ -139,6 +153,24 @@ void main() {
     if (abs(vUv.x - lineNegFPosition) < lineThickness) {
         gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7);
     }
+
+    // Highlight the vertical lines - 2
+
+    // if (abs(vUv.x - lineA1Position) < lineThickness) {
+    //     gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7);
+    // }
+
+    // if (abs(vUv.x - lineNegA1Position) < lineThickness) {
+    //     gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7);
+    // }
+
+    // if (abs(vUv.x - lineB1Position) < lineThickness) {
+    //     gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7);
+    // }
+
+    // if (abs(vUv.x - lineNegB1Position) < lineThickness) {
+    //     gradient2 = mix(color3, vec3(0.0, 0.0, 0.0), 0.7);
+    // }
 
     gl_FragColor = vec4(gradient2, 1.0);
 }
