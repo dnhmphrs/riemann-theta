@@ -10,11 +10,12 @@
 	import vertexShader from './shaders/vertexShader-three.glsl';
 	import fragmentShader_riemann_theta from './shaders/riemannThetaFrag.glsl';
 	import fragmentShader_theta_lattice from './shaders/thetaLatticeFrag.glsl';
+	import fragmentShader_euler_riemann_zeta from './shaders/eulerRiemannZetaFrag.glsl';
 	import fragmentShader_kp from './shaders/kpEquationFrag.glsl';
 
 
 
-	let shaderMaterial_theta_lattice, shaderMaterial_riemann_theta, shaderMaterial_kp;
+	let shaderMaterial_theta_lattice, shaderMaterial_riemann_theta, shaderMaterial_kp, shaderMaterial_euler_riemann_zeta;
 
 	let container;
 	let stats;
@@ -85,6 +86,17 @@
 				color1: { value: colors.color4 },
 				color2: { value: colors.color5 },
 				color3: { value: colors.color4 },
+			}
+		});
+
+		shaderMaterial_euler_riemann_zeta = new THREE.ShaderMaterial({
+			vertexShader: vertexShader,
+			fragmentShader: fragmentShader_euler_riemann_zeta,
+			uniforms: {
+				...uniformsBase,
+				color1: { value: colors.color1 },
+				color2: { value: colors.color5 },
+				color3: { value: colors.color9 },
 			}
 		});
 	}
@@ -201,6 +213,24 @@
 		}
 	}
 
+	
+	function setEulerRiemannZeta() {
+
+		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_euler_riemann_zeta);
+		// let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_euler_riemann_zeta);
+		scene.add(plane4);
+
+		// if ($screenType != 1) {
+		// 	plane5.position.z = 200;
+		// 	scene.add(plane5);
+
+		// } else {
+		// 	plane5.position.z = 100;
+		// 	plane5.rotation.z = Math.PI / 2
+		// 	scene.add(plane5);
+		// }
+	}
+
 	function setScene () {
 
 		if ($page.url.pathname == '/') {
@@ -213,6 +243,10 @@
 
 		if ($page.url.pathname == '/tangent-lattice') {
 			setThetaLattice();
+		}
+
+		if ($page.url.pathname == '/euler-riemann-zeta') {
+			setEulerRiemannZeta();
 		}
 	}
 

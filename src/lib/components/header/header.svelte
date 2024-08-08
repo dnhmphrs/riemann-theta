@@ -16,13 +16,13 @@
 			name: 'KP Equation (N=2)',
 			href: '/kp-equation'
 		},
-		// {
-		// 	name: 'Siegel Upper Half Space (N=2)',
-		// 	href: '/siegel-upper-half-space'
-		// },
 		{
-			name: 'Tangent Lattice (N=1)',
+			name: 'Theta - Tangent Lattice (N=1)',
 			href: '/tangent-lattice'
+		},
+		{
+			name: 'Euler-Riemann Zeta - Tangent',
+			href: '/euler-riemann-zeta'
 		},
 	];
 
