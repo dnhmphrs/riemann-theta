@@ -1,10 +1,13 @@
 <script>
 	import Nav from './nav.svelte';
+	import { page } from '$app/stores';
 	import Matrix from './matrix.svelte';
 	// import { darkMode, screenType } from '$lib/store/store';
 
 	// import { page } from '$app/stores';
 	// import { goto } from '$app/navigation';
+
+	$: showMatrix = ['/', '/kp-equation', '/tangent-lattice'].includes($page.url.pathname);
 
 	// stub data out
 	const navItems = [
@@ -23,7 +26,7 @@
 		{
 			name: 'Euler-Riemann Zeta - Tangent',
 			href: '/euler-riemann-zeta'
-		},
+		}
 	];
 
 	// let toggleDarkMode = () => {
@@ -34,30 +37,12 @@
 
 <header>
 	<main>
-
-		<div></div>
-		<Matrix />
+		<div />
+		{#if showMatrix}
+			<Matrix />
+		{/if}
 		<Nav {navItems} />
-
-	<!-- <div on:click={() => toggleDarkMode()} on:keydown={() => toggleDarkMode()} class="darkMode right">
-		<p class:selected={$darkMode == false}>ONLINE</p>
-		<p class="selected">/</p>
-		<p class:selected={$darkMode == true}>OFFLINE</p>
-	</div> -->
-
-	<!-- <div class="icons">
-    <a href="/dan_humphries_cv.pdf">
-        <img src="/icons/cv.svg" alt="cv" class="icon" />
-    </a>
-    <a href="mailto: dan@aufbau.io">
-        <img src="/icons/mail.svg" alt="mail" class="icon" />
-    </a>
-    <a href="https://www.instagram.com/dn.niels" target="_blank" rel="noreferrer">
-        <img src="/icons/insta.svg" alt="instagram" class="icon" />
-    </a>
-	</div> -->
-
-</main>
+	</main>
 </header>
 
 <style>
