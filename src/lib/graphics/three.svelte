@@ -7,23 +7,14 @@
 	import * as THREE from 'three';
 	import Stats from 'stats.js'
 
-	// old
-	// import vertexShader from './shaders/vertexShader-three.glsl';
-  // import riemannRealFragShaderSource from './shaders/riemannRealFrag.glsl';
-  // import riemannImaginaryFragShaderSource from './shaders/riemannImaginaryFrag.glsl';
-  // import riemannLatticeFragShaderSource from './shaders/riemannLatticeFrag.glsl';
-  // import kpEquationFragShaderSource from './shaders/kpEquationFrag.glsl';
-
-	// new
 	import vertexShader from './shaders/vertexShader-three.glsl';
-	import fragmentShader_riemann_real from './shaders/riemannRealFrag.glsl';
-	import fragmentShader_riemann_imaginary from './shaders/riemannImaginaryFrag.glsl';
-	import fragmentShader_riemann_lattice from './shaders/riemannLatticeFrag.glsl';
+	import fragmentShader_riemann_theta from './shaders/riemannThetaFrag.glsl';
+	import fragmentShader_theta_lattice from './shaders/thetaLatticeFrag.glsl';
 	import fragmentShader_kp from './shaders/kpEquationFrag.glsl';
 
 
 
-	let shaderMaterial_riemann_lattice, shaderMaterial_riemann_real, shaderMaterial_riemann_imaginary, shaderMaterial_riemann, shaderMaterial_kp;
+	let shaderMaterial_theta_lattice, shaderMaterial_riemann_theta, shaderMaterial_kp;
 
 	let container;
 	let stats;
@@ -57,13 +48,15 @@
 			color5: new THREE.Color(0x5099b4 ),
 			color6: new THREE.Color(0x0000ff),
 			color7: new THREE.Color(0x00ff00),
+			// deep purple
+			color8: new THREE.Color(0xA020F0),
 			color9: new THREE.Color(0x8fbd5a),
 			color0: new THREE.Color(0x232323),
 		}
 
-		shaderMaterial_riemann_real = new THREE.ShaderMaterial({
+		shaderMaterial_riemann_theta = new THREE.ShaderMaterial({
 			vertexShader: vertexShader,
-			fragmentShader: fragmentShader_riemann_real,
+			fragmentShader: fragmentShader_riemann_theta,
 			uniforms: {
 				...uniformsBase,
 				color1: { value: colors.color1 },
@@ -73,21 +66,9 @@
 			}
 		});
 
-		shaderMaterial_riemann_imaginary = new THREE.ShaderMaterial({
+		shaderMaterial_theta_lattice = new THREE.ShaderMaterial({
 			vertexShader: vertexShader,
-			fragmentShader: fragmentShader_riemann_imaginary,
-			uniforms: {
-				...uniformsBase,
-				color1: { value: colors.color1 },
-				color2: { value: colors.color2 },
-				color3: { value: colors.color6 },
-				color4: { value: colors.color7 },
-			}
-		});
-
-		shaderMaterial_riemann_lattice = new THREE.ShaderMaterial({
-			vertexShader: vertexShader,
-			fragmentShader: fragmentShader_riemann_lattice,
+			fragmentShader: fragmentShader_theta_lattice,
 			uniforms: {
 				...uniformsBase,
 				color1: { value: colors.color1 },
@@ -171,6 +152,23 @@
 
 	function setHome () {
 
+		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_riemann_theta);
+		let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_riemann_theta);
+		scene.add(plane4);
+
+		if ($screenType != 1) {
+			plane5.position.z = 200;
+			scene.add(plane5);
+
+		} else {
+			plane5.position.z = 100;
+			plane5.rotation.z = Math.PI / 2
+			scene.add(plane5);
+		}
+	}
+
+	function setKP () {
+
 		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_kp);
 		let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_kp);
 		scene.add(plane4);
@@ -186,44 +184,10 @@
 		}
 	}
 
-	function setRiemannReal () {
+	function setThetaLattice () {
 
-		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_riemann_real);
-		let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_riemann_real);
-		scene.add(plane4);
-
-		if ($screenType != 1) {
-			plane5.position.z = 200;
-			scene.add(plane5);
-
-		} else {
-			plane5.position.z = 100;
-			plane5.rotation.z = Math.PI / 2
-			scene.add(plane5);
-		}
-	}
-
-	function setRiemannImaginary () {
-
-		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_riemann_imaginary);
-		let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_riemann_imaginary);
-		scene.add(plane4);
-
-		if ($screenType != 1) {
-			plane5.position.z = 200;
-			scene.add(plane5);
-
-		} else {
-			plane5.position.z = 100;
-			plane5.rotation.z = Math.PI / 2
-			scene.add(plane5);
-		}
-	}
-
-	function setRiemannLattice () {
-
-		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_riemann_lattice);
-		let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_riemann_lattice);
+		let plane4 = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), shaderMaterial_theta_lattice);
+		let plane5 = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), shaderMaterial_theta_lattice);
 		scene.add(plane4);
 
 		if ($screenType != 1) {
@@ -243,16 +207,12 @@
 			setHome();
 		}
 
-		if ($page.url.pathname == '/riemann-real') {
-			setRiemannReal();
+		if ($page.url.pathname == '/kp-equation') {
+			setKP();
 		}
 
-		if ($page.url.pathname == '/riemann-imaginary') {
-			setRiemannImaginary();
-		}
-
-		if ($page.url.pathname == '/riemann-tangent') {
-			setRiemannLattice();
+		if ($page.url.pathname == '/theta-lattice') {
+			setThetaLattice();
 		}
 	}
 

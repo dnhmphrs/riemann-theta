@@ -9,20 +9,20 @@
 	// stub data out
 	const navItems = [
 		{
-			name: 'KP Equation (N=2)',
+			name: 'Riemann Theta (N=2)',
 			href: '/'
 		},
 		{
-			name: 'Riemann Theta - Real Part (N=2)',
-			href: '/riemann-real'
+			name: 'KP Equation (N=2)',
+			href: '/kp-equation'
 		},
+		// {
+		// 	name: 'Riemann Theta - Imaginary Part (N=2)',
+		// 	href: '/riemann-imaginary'
+		// },
 		{
-			name: 'Riemann Theta - Imaginary Part (N=2)',
-			href: '/riemann-imaginary'
-		},
-		{
-			name: 'Riemann Theta - Tangent (N=1)',
-			href: '/riemann-tangent'
+			name: 'Theta Lattice (N=1)',
+			href: '/theta-lattice'
 		},
 	];
 

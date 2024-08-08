@@ -5,8 +5,6 @@ uniform vec3 color2;
 uniform vec3 color3;
 uniform vec2 mouse;
 
-
-
 // Function to create a dynamic Riemann matrix based on mouse input
 mat3 createDynamicOmega(vec2 mouse) {
     mouse.x *= 0.6;
@@ -18,7 +16,7 @@ mat3 createDynamicOmega(vec2 mouse) {
     );
 }
 
-const int N = 2; // Reduced number of terms in the series for better performance
+const int N = 1; // Reduced number of terms in the series for better performance
 
 // Function to compute the real part of the Riemann theta function
 float riemannThetaReal(vec3 z, mat3 Omega) {
@@ -38,9 +36,9 @@ float riemannThetaReal(vec3 z, mat3 Omega) {
 
                 // Compute the real part of the exponential term
                 float exponent = 3.14159 * (nt_Omega_n + nt_z);
-                float imaginaryPart = sin(exponent); // Use cosine for the real part
+                float tangentPart = tan(exponent); // Use cosine for the real part
 
-                sum += imaginaryPart;
+                sum += tangentPart;
             }
         }
     }
@@ -50,8 +48,8 @@ float riemannThetaReal(vec3 z, mat3 Omega) {
 
 void main() {
     // Map the fragment coordinates to the complex plane
-    float x = vUv.x * 5.0 - 2.5;
-    float y = vUv.y * 5.0 - 2.5;
+    float x = vUv.x * 1.0 - 0.5;
+    float y = vUv.y * 1.0 - 0.5;
 
     // Create a dynamic Riemann matrix based on mouse input
     mat3 OmegaDynamic = createDynamicOmega(mouse);
@@ -67,7 +65,7 @@ void main() {
 
     // Create gradients for visualization
     vec3 gradient1 = mix(color1, color2, normalizedTheta);
-    vec3 gradient2 = mix(color3, gradient1, 0.5 + 0.5 * sin(normalizedTheta));
+    vec3 gradient2 = mix(color3, gradient1, 0.5 + 0.5 * cos(normalizedTheta));
 
     gl_FragColor = vec4(gradient2, 1.0);
 }
