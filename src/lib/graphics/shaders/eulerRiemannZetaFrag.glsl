@@ -34,7 +34,7 @@ const float LINE_NEG_F = -initial1 - 5.0 * gap1; // The real part of s at 0
 // const float LINE_NEG_B1 = -initial2 - gap2; // The real part of s at 0
 
 
-// Function to compute the Euler–Riemann zeta function
+// Function to compute an adapted Euler–Riemann zeta function
 float zeta(float sigma, float t) {
     float sum = 0.0;
     const int N = 100; // Number of terms in the series for approximation
@@ -48,6 +48,39 @@ float zeta(float sigma, float t) {
     return sum;
 }
 
+// float zetaTangentReal(float sigma, float t) {
+//     float sum = 0.0;
+//     const int N = 100; // Number of terms in the series for approximation
+
+//     for (int n = 1; n <= N; ++n) {
+//         float term = pow(float(n), -sigma);
+//         float angle = -t * log(float(n));
+//         sum += term * tan(angle); // Real part using tangent
+//     }
+
+//     return sum;
+// }
+
+// float zetaTangentImaginary(float sigma, float t) {
+//     float sum = 0.0;
+//     const int N = 100; // Number of terms in the series for approximation
+
+//     for (int n = 1; n <= N; ++n) {
+//         float term = pow(float(n), -sigma);
+//         float angle = -t * log(float(n));
+//         sum += term * tan(angle); // Imaginary part using tangent
+//     }
+
+//     return sum;
+// }
+
+// float zetaTangentPhase(float sigma, float t) {
+//     float re = zetaTangentReal(sigma, t);
+//     float im = zetaTangentImaginary(sigma, t);
+//     return atan(im, re); // Compute the phase angle
+// }
+
+
 void main() {
     float scale = 100.0;
     float half_scale = scale * 0.5;
@@ -57,6 +90,7 @@ void main() {
 
     // Compute the zeta function value
     float zetaValue = zeta(sigma, t);
+    // float zetaValue = zetaTangentPhase(sigma, t);
 
     // Normalize zetaValue to map to color range
     float normalizedZeta = 0.5 + 0.1 * zetaValue; // Adjust scaling factor for better contrast
