@@ -23,10 +23,10 @@
 			name: 'Theta - Tangent Lattice (N=1)',
 			href: '/tangent-lattice'
 		},
-		// {
-		// 	name: 'Euler-Riemann Zeta - Tangent + Hermite Polynomials',
-		// 	href: '/euler-riemann-zeta'
-		// }
+		{
+			name: 'Euler-Riemann Zeta - Tangent',
+			href: '/euler-riemann-zeta'
+		}
 	];
 
 	// let toggleDarkMode = () => {
