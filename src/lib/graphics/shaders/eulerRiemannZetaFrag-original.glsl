@@ -13,7 +13,7 @@ float zeta(float sigma, float t) {
     for (int n = 1; n <= N; ++n) {
         float term = pow(float(n), -sigma);
         float angle = -t * log(float(n));
-        sum += term * tan(angle); // Real part
+        sum += term * cos(angle); // Real part
     }
 
     return sum;
