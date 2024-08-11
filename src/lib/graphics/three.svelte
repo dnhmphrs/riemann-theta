@@ -10,7 +10,7 @@
 	import vertexShader from './shaders/vertexShader-three.glsl';
 	import fragmentShader_riemann_theta from './shaders/riemannThetaFrag.glsl';
 	import fragmentShader_theta_lattice from './shaders/thetaLatticeFrag.glsl';
-	import fragmentShader_euler_riemann_zeta from './shaders/eulerRiemannZetaFrag.glsl';
+	import fragmentShader_euler_riemann_zeta from './shaders/eulerRiemannZetaFrag-base.glsl';
 	import fragmentShader_kp from './shaders/kpEquationFrag.glsl';
 
 
