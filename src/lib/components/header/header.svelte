@@ -16,6 +16,10 @@
 			href: '/'
 		},
 		{
+			name: 'Riemann Theta - Imaginary Part (N=2)',
+			href: '/theta-imaginary'
+		},
+		{
 			name: 'KP Equation (N=2)',
 			href: '/kp-equation'
 		},
@@ -23,10 +27,6 @@
 			name: 'Theta - Tangent Lattice (N=1)',
 			href: '/tangent-lattice'
 		},
-		// {
-		// 	name: 'Euler-Riemann Zeta - Tangent',
-		// 	href: '/euler-riemann-zeta'
-		// }
 	];
 
 	// let toggleDarkMode = () => {
