@@ -7,7 +7,9 @@
 	// import { page } from '$app/stores';
 	// import { goto } from '$app/navigation';
 
-	$: showMatrix = ['/', '/kp-equation', '/tangent-lattice'].includes($page.url.pathname);
+	$: showMatrix = ['/', '/theta-imaginary', '/kp-equation', '/tangent-lattice'].includes(
+		$page.url.pathname
+	);
 
 	// stub data out
 	const navItems = [
@@ -26,7 +28,7 @@
 		{
 			name: 'Theta - Tangent Lattice (N=1)',
 			href: '/tangent-lattice'
-		},
+		}
 	];
 
 	// let toggleDarkMode = () => {
