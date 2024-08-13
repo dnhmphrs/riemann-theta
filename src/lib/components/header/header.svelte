@@ -14,7 +14,7 @@
 	// stub data out
 	const navItems = [
 		{
-			name: 'Riemann Theta - Real Part (N=2)',
+			name: 'Riemann Theta - Mobius - Real Part (N=2)',
 			href: '/'
 		},
 		{

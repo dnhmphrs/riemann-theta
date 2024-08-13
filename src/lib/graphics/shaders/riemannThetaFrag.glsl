@@ -56,14 +56,25 @@ float riemannThetaReal(vec3 z, mat3 Omega) {
 
 void main() {
     // Map the fragment coordinates to the complex plane
-    float x = vUv.x * 5.0 - 2.5;
-    float y = vUv.y * 5.0 - 2.5;
+    float sigma = vUv.y * 5.0 - 2.5;
+    float t = vUv.x * 5.0 - 2.5;
+
+    // Map mouse position to coefficients
+    float a = 1.0 + mouse.y * 0.5;  // Controls scaling
+    float b = mouse.x * 2.0;        // Controls translation
+    float c = mouse.y * 2.0;        // Controls skewing
+    float d = 1.0 - mouse.x * 0.5;  // Controls scaling and rotation
 
     // Create a dynamic Riemann matrix based on mouse input
     mat3 OmegaDynamic = createDynamicOmega(mouse);
 
+    // Combine sigma and t into a complex number and apply the Möbius transformation
+    float denom = c * c * (sigma * sigma + t * t) + 2.0 * c * d * sigma + d * d;
+    float transformedSigma = (a * c * (sigma * sigma + t * t) + a * d * sigma + b * c * sigma + b * d) / denom;
+    float transformedT = (a * c * 2.0 * sigma * t + a * d * t + b * c * t) / denom;
+
     // Construct a 3D vector for the z variable
-    vec3 z = vec3(x, y, 2.0); // Static third component
+    vec3 z = vec3(transformedSigma, transformedT, 2.0); // Static third component
 
     // Calculate the real part of the Riemann theta function at z
     float thetaValueReal = riemannThetaReal(z, OmegaDynamic);
